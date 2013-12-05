@@ -1,4 +1,4 @@
-SampleBlog.controllers :posts do
+SampleBlog::App.controllers :posts do
   get :index, :provides => [:html, :rss, :atom] do
     @posts = Post.all(:order => 'created_at desc')
     render 'posts/index'

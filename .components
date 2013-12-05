@@ -1,6 +1,10 @@
---- 
-:test: shoulda
+---
 :orm: activerecord
-:mock: mocha
+:test: shoulda
+:mock: none
 :script: jquery
 :renderer: haml
+:stylesheet: sass
+:namespace: SampleBlog
+:migration_format: number
+:admin_renderer: haml

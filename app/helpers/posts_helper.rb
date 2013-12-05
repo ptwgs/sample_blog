@@ -1,6 +1,6 @@
 # Helper methods defined here can be accessed in any controller or view in the application
 
-SampleBlog.helpers do
+SampleBlog::App.helpers do
   # feed_tag(:rss, :title => "RSS", :href => url(...))
   # feed_tag(:atom, :title => "ATOM", :href => url(...))
   def feed_tag(mime, options={})

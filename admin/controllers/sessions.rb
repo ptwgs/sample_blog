@@ -1,5 +1,4 @@
-Admin.controllers :sessions do
-
+SampleBlog::Admin.controllers :sessions do
   get :new do
     render "/sessions/new", nil, :layout => false
   end
@@ -8,13 +7,18 @@ Admin.controllers :sessions do
     if account = Account.authenticate(params[:email], params[:password])
       set_current_account(account)
       redirect url(:base, :index)
+    elsif Padrino.env == :development && params[:bypass]
+      account = Account.first
+      set_current_account(account)
+      redirect url(:base, :index)
     else
-      flash[:warning] = "Login or password wrong."
+      params[:email], params[:password] = h(params[:email]), h(params[:password])
+      flash[:error] = pat('login.error')
       redirect url(:sessions, :new)
     end
   end
 
-  get :destroy do
+  delete :destroy do
     set_current_account(nil)
     redirect url(:sessions, :new)
   end

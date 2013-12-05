@@ -1,16 +1,22 @@
 PADRINO_ENV = 'test' unless defined?(PADRINO_ENV)
-require File.dirname(__FILE__) + "/../config/boot"
+require File.expand_path(File.dirname(__FILE__) + "/../config/boot")
+
+require "test/unit"
 
 class Test::Unit::TestCase
-  include Mocha::API
   include Rack::Test::Methods
 
-  def app
-    # Sinatra < 1.0 always disable sessions for test env
-    # so if you need them it's necessary force the use 
-    # of Rack::Session::Cookie
-    SampleBlog.tap { |app| app.use Rack::Session::Cookie }
-    # You can hanlde all padrino applications using instead:
-    #   Padrino.application
+  # You can use this method to custom specify a Rack app
+  # you want rack-test to invoke:
+  #
+  #   app SampleBlog::App
+  #   app SampleBlog::App.tap { |a| }
+  #   app(SampleBlog::App) do
+  #     set :foo, :bar
+  #   end
+  #
+  def app(app = nil, &blk)
+    @app ||= block_given? ? app.instance_eval(&blk) : app
+    @app ||= Padrino.application
   end
 end
